@@ -21,14 +21,14 @@ def create_orbit_transform(theta, phi, radius):
     """
     以正面视角为基准的小角度旋转
     """
+    # 构建旋转矩阵
+    transform = torch.eye(4, dtype=torch.float32).cuda()
+
     # 正面视角
     if abs(theta) < 1e-6 and abs(phi - math.pi/2) < 1e-6:
         transform[2, 3] = radius
         print(transform)
         return transform
-    
-    # 构建旋转矩阵
-    transform = torch.eye(4, dtype=torch.float32).cuda()
     
     # 先绕y轴旋转theta角度（水平旋转）
     cos_theta = math.cos(theta)
