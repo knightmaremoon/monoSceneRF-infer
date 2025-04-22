@@ -129,6 +129,14 @@ def main():
     xs = torch.arange(start=0, end=img_size[0], step=scale, dtype=torch.float32).type_as(cam_K)
     ys = torch.arange(start=0, end=img_size[1], step=scale, dtype=torch.float32).type_as(cam_K)
     grid_x, grid_y = torch.meshgrid(xs, ys)
+    
+    jitter_range = 0.5 * scale # 抖动范围为半个像素
+    rand_x = torch.rand_like(grid_x) * jitter_range
+    rand_y = torch.rand_like(grid_y) * jitter_range
+
+    grid_x = grid_x + rand_x
+    grid_y = grid_y + rand_y
+
     rendered_im_size = grid_x.shape
     
     sampled_pixels = torch.cat([
