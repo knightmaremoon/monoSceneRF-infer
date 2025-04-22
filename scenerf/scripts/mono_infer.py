@@ -94,7 +94,8 @@ def main():
     
     # 加载图像并确保数据类型为float32
     img = Image.open(img_path)
-    img = img.resize((320, 240))
+    # img = img.resize((320, 240))
+    img = img.resize((384, 288))
     # 调整图像大小
     img = np.array(img, dtype=np.float32) / 255.0
     img = torch.from_numpy(img).permute(2, 0, 1).unsqueeze(0).cuda()
@@ -102,7 +103,10 @@ def main():
     # 清理显存
     clear_gpu_memory()
     
-    cam_K = torch.tensor([[262.5, 0, 160], [0, 262.5, 120], [0, 0, 1]], dtype=torch.float32).cuda()  # 调整相机内参
+    # cam_K = torch.tensor([[262.5, 0, 160], [0, 262.5, 120], [0, 0, 1]], dtype=torch.float32).cuda()  # 调整相机内参
+    cam_K = torch.tensor([[315.0, 0, 192],     # 262.5*1.2=315.0, 160*1.2=192
+                         [0, 315.0, 144],       # 262.5*1.2=315.0, 120*1.2=144
+                         [0, 0, 1]], dtype=torch.float32).cuda()
     inv_K = torch.inverse(cam_K)
     
     # 清理显存
@@ -124,19 +128,11 @@ def main():
     clear_gpu_memory()
     
     # 设置渲染参数
-    img_size = (320, 240)  # 调整图像大小
+    img_size = (384, 288)  # 调整图像大小
     scale = 1
     xs = torch.arange(start=0, end=img_size[0], step=scale, dtype=torch.float32).type_as(cam_K)
     ys = torch.arange(start=0, end=img_size[1], step=scale, dtype=torch.float32).type_as(cam_K)
     grid_x, grid_y = torch.meshgrid(xs, ys)
-    
-    jitter_range = 0.5 * scale # 抖动范围为半个像素
-    rand_x = torch.rand_like(grid_x) * jitter_range
-    rand_y = torch.rand_like(grid_y) * jitter_range
-
-    grid_x = grid_x + rand_x
-    grid_y = grid_y + rand_y
-
     rendered_im_size = grid_x.shape
     
     sampled_pixels = torch.cat([
@@ -172,7 +168,7 @@ def main():
                 cam_K,
                 transform,
                 x_rgb,
-                ray_batch_size=100,
+                ray_batch_size=20,
                 sampled_pixels=sampled_pixels
             )
             print(inspect.signature(model.render_rays_batch))
