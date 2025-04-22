@@ -148,11 +148,11 @@ def main():
         #     (math.radians(5), math.pi/2 - math.radians(5))  # 右转5度同时向下看5度
         # ]
         test_distances = [
-            1.0,    # 原始距离
-            0.8,    # 稍微靠近
-            0.6,    # 更靠近
-            1.2,    # 稍微远离
-            1.4     # 更远离
+            1.0,   
+            2.0,    
+            3.0,   
+            4.0,    
+            5.0     
         ]
         # 为测试创建保存目录
         test_dir = os.path.join(save_dir, "distance_test")
