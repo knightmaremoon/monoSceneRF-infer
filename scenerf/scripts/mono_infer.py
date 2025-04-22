@@ -78,7 +78,7 @@ def disparity_normalization_vis(disparity):
 def main():
     # 设置参数
     model_path = "/home/ubuntu/scenerf_bundlefusion.ckpt"  # 模型路径
-    img_path = "/home/ubuntu/monoSceneRF-infer/scenerf/scripts/building_700.jpg"     # 输入图像路径
+    img_path = "/home/ubuntu/monoSceneRF-infer/scenerf/scripts/building.jpg"     # 输入图像路径
     save_dir = "/home/ubuntu/monoSceneRF-infer/results/reconstruction/colors"          # 保存结果路径
     
     # 清理显存
@@ -97,7 +97,8 @@ def main():
     # img = img.resize((320, 240))
     # img = img.resize((384, 288))
     # img = img.resize((448, 336))
-    img = img.resize((512, 384))
+    # img = img.resize((512, 384))
+    img = img.resize((1024, 768))
     # 调整图像大小
     img = np.array(img, dtype=np.float32) / 255.0
     img = torch.from_numpy(img).permute(2, 0, 1).unsqueeze(0).cuda()
@@ -107,8 +108,8 @@ def main():
     
     # cam_K = torch.tensor([[262.5, 0, 160], [0, 262.5, 120], [0, 0, 1]], dtype=torch.float32).cuda()  # 调整相机内参
     # 相机内参也要相应调整（448/320 = 1.4）
-    cam_K = torch.tensor([[420.0, 0, 256],      # 262.5*1.6=420.0, 160*1.6=256
-                         [0, 420.0, 192],        # 262.5*1.6=420.0, 120*1.6=192
+    cam_K = torch.tensor([[840.0, 0, 512],      # 262.5*3.2=840.0, 160*3.2=512
+                         [0, 840.0, 384],        # 262.5*3.2=840.0, 120*3.2=384
                          [0, 0, 1]], dtype=torch.float32).cuda()
 
     inv_K = torch.inverse(cam_K)
@@ -132,7 +133,7 @@ def main():
     clear_gpu_memory()
     
     # 设置渲染参数
-    img_size = (512, 384)  # 调整图像大小
+    img_size = (1024, 768)  # 调整图像大小
     scale = 1
     xs = torch.arange(start=0, end=img_size[0], step=scale, dtype=torch.float32).type_as(cam_K)
     ys = torch.arange(start=0, end=img_size[1], step=scale, dtype=torch.float32).type_as(cam_K)
