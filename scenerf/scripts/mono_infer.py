@@ -78,7 +78,7 @@ def disparity_normalization_vis(disparity):
 def main():
     # 设置参数
     model_path = "/home/ubuntu/scenerf_bundlefusion.ckpt"  # 模型路径
-    img_path = "/home/ubuntu/monoSceneRF-infer/scenerf/scripts/building.jpg"     # 输入图像路径
+    img_path = "/home/ubuntu/monoSceneRF-infer/scenerf/scripts/building_resized.jpg"     # 输入图像路径
     save_dir = "/home/ubuntu/monoSceneRF-infer/results/reconstruction/colors"          # 保存结果路径
     
     # 清理显存
