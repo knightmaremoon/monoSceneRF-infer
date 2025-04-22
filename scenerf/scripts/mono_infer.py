@@ -173,7 +173,7 @@ def main():
                 cam_K,
                 transform,
                 x_rgb,
-                ray_batch_size=20,
+                ray_batch_size=10,
                 sampled_pixels=sampled_pixels
             )
             print(inspect.signature(model.render_rays_batch))
