@@ -153,7 +153,7 @@ def main():
             0,
         ]
         # 为测试创建保存目录
-        test_dir = os.path.join(save_dir, "distance_test")
+        test_dir = os.path.join(save_dir, "test_ray_batch_size")
         os.makedirs(test_dir, exist_ok=True)
 
         for idx, distance in enumerate(test_distances):
